@@ -4,17 +4,24 @@ import time
 import threading
 import json
 import platform
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-
-def proverka_OS():
+def clear():
     if platform.system() == "Windows":
-        print("Windows... Okey")
-        time.sleep(0.5)
+        os.system("cls")
     else:
-        print("Извините, на данной операционной системе игра не поддерживается (причина: я не знаю команды linux, тобиш остальных ОС)")
-        time.sleep(3)
-        return
-        
+        os.system("clear")
+def title_okno(text):
+    if platform.system() == "Windows":
+        os.system(f"title {text}")
+    else:      
+        pass
+
+def color(code):
+    if os.name == "nt":
+        os.system(f"color {code}")
+    else:
+        pass
 
 def save_game():
     data = {
@@ -73,8 +80,8 @@ def classik_kazino():
         time.sleep(1)
         return
     while True:
-        os.system("cls")
-        os.system("title Winddos казино-классика")
+        clear()
+        title_okno("Winddos казино-классика")
         print()
         try:
             print("Текущее кол-во очков:", bal)
@@ -104,18 +111,18 @@ def classik_kazino():
 
 def slots_kazino():
     global bal
-    os.system("title Winddos слоты")
+    title_okno("Winddos слоты")
     if bal <= 4.9:
         print("Вам к сожелению нельзя, у вас менее 5 баллов")
         time.sleep(2)
     elif bal >= 5:
 
-        os.system("cls")
+        clear()
         print("Добро пожаловать Сэр. У вас как раз есть 5 баллов для игры.")
         print()
         time.sleep(2)
         while True:
-            os.system("cls")
+            clear()
             din2 = input("Будете играть? [1] or [] - начать играть, [q] - выйти. \n")
             if din2 == "q":
                 break
@@ -148,7 +155,7 @@ def btc_sel_buy():
     global bal
     global btc
     while True:
-        os.system("cls") 
+        clear()
             
         print("--=== БАНК КРИПТОВАЛЮТ ===--")
         print(f"Ваш баланс: {bal}")
@@ -224,8 +231,8 @@ def mining_wdd():
     global bal
     global btc
     global gpu_level
-    os.system("cls")
-    os.system("title Майнинг.wdd")
+    clear()
+    title_okno("Майнинг.wdd")
  
     print("Подождите...")
     time.sleep(0.5)
@@ -234,12 +241,12 @@ def mining_wdd():
     print("Компиляция завершена, запуск...")
     
     for col in ["32", "52", "03", "23", "42", "32", "52", "03", "23", "42", "32", "52", "03", "23", "42", "25"]:
-        os.system(f"color {col}")
+        color(col)
         time.sleep(0.1)
     
-    os.system("cls")
+    clear()
     time.sleep(0.7)
-    os.system("color 2")
+    color("2")
     print("Выберите действие: \n[1] - Майнинг ДДос-коинов \n[q] - выйти")
     while True:
         mrez = input("user/майнинг.wdd>>").lower()
@@ -264,8 +271,8 @@ def mining_wdd():
 
                 for i in range(cikl_int):
                     print("Начало майнинга...")
-                    time.sleep(3)
-                    base_income = random.uniform(0.01, 0.02)
+                    time.sleep(2)
+                    base_income = random.uniform(0.05, 0.2)
                     rewmin = base_income * gpu_level
                     rewmin_k = round(rewmin, 2) #округление для облегчения продажи
                     btc = round(btc + rewmin_k, 2)
@@ -280,9 +287,9 @@ def mining_wdd():
 
 def service_mining():
     while True:
-        os.system("cls")
-        os.system("title Service WinDDos")
-        os.system("color 80")
+        clear()
+        title_okno("Service WinDDos")
+        color("80")
         global bal
         global gpu_level
         global upgrade_cost_gpu
@@ -346,9 +353,9 @@ def main_wdd():
     global btc
     global bal
     while True:
-        os.system("title Winddos main")
-        os.system("cls")
-        os.system("color 07")
+        title_okno("Winddos main")
+        clear()
+        color("07")
         print("Mikrosoft Winddos [Version уйуйуйуйуй] \n(c) Корпорация Майкрософт (Mikrosoft Korporation). Все права не защищены.")
         print("-------------------------------------")
         print("Ваш баланс равен =", bal)
@@ -359,7 +366,7 @@ def main_wdd():
         print("Обновление новостей происходит раз в 2 секунды (нажмите Enter чтобы обновить).")
         print("-------------------------------------")
         print("Выберите режим из 3-х")
-        rez = input("[1] - классический казик \n[2] - слоты \n[3] - покупка криптовалют \n[4] - Майнинг \n[5] - Сервис улучшения майнинга \n[del_s] - удалить сохранение \n[0] - Выйти из программы (ОБЯЗАТЕЛЬНО ДЛЯ СОХРАНЕНИЯ). \n\n:")
+        rez = input("[1] - классический казик \n[2] - слоты \n[3] - покупка криптовалют \n[4] - Майнинг \n[5] - Сервис улучшения майнинга \n[0] - Выйти из программы (ОБЯЗАТЕЛЬНО ДЛЯ СОХРАНЕНИЯ). \n\n:")
         if rez == "1":
             classik_kazino()
         elif rez == "2":
@@ -374,7 +381,6 @@ def main_wdd():
         elif rez == "5":
             service_mining()
 
-proverka_OS()
 potok_kurs = threading.Thread(target=kurs_btc, daemon=True)
 novosti_potok = threading.Thread(target=novosti, daemon=True)
 auto_save_potok = threading.Thread(target=auto_save, daemon=True)
